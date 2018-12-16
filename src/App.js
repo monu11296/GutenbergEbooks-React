@@ -34,7 +34,6 @@ class App extends Component {
     }
 
 
-
   fetchData(){
     axios.get(API, {
       params: {topic: this.state.query}
