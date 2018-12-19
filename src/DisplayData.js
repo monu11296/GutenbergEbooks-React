@@ -1,19 +1,9 @@
 import React, {Component} from 'react';
+import loadingPic from './pic.gif';
 
 
 
 class DisplayData extends Component {
-
-    constructor(props){
-        super(props);
-        this.handleQuery = this.handleQuery.bind(this);
-      }
-      
-      handleQuery = (e) => { 
-        e.preventDefault();
-       const query = e.target.value;
-       this.props.onChange(query); 
-      }
 
       //var title_image = this.props.results;
 
@@ -39,49 +29,32 @@ class DisplayData extends Component {
 
 
     render(){
+        var title_image;
+        const load = "....";
 
-        const title_image = this.props.results.map(data1 => 
+        if(this.props.myQuery) {
+        title_image = this.props.results.map(data1 => 
             <li key={data1.id}>
-                <h2>{data1.title}</h2> 
-                <p>by {data1.authors.map((authors,index) => <span key={index}>{authors.name}</span>)}</p>
-                {/*<img src={data1.formats['image/jpeg']} alt={data1.formats['image/jpeg']} />*/}
-                <img src={this.checkImageSize(data1.formats['image/jpeg'])} alt={data1.formats['image/jpeg']} />
+                <h3>{this.props.loading ? load : data1.title}</h3>
+
+                <p>by {data1.authors.map((authors,index) => <span key={index}>{this.props.loading ? load : authors.name}</span>)}</p>
+                    {/*<img src={data1.formats['image/jpeg']} alt={data1.formats['image/jpeg']} />*/}
+                <img src={this.props.loading ? loadingPic : this.checkImageSize(data1.formats['image/jpeg'])} alt={data1.formats['image/jpeg']} />
                 <br />
 
-                     <p>
-                     <a href={this.checkFormat(Object.values(data1.formats))}>Read</a>
-                    </p>
+                <p>
+                    <a href={this.props.loading ? load : this.checkFormat(Object.values(data1.formats))}><button>Read</button></a>
+                </p>
         </li>);
+        }
+
+        else { title_image = "Please Select a Topic"; }
 
         return(
             <div>
-                <h2>Book Category {this.props.myQuery}</h2>
-
-                    <select id="category" onChange={this.handleQuery}>
-                    <option value="Fiction">
-                        Fiction
-                    </option>
-
-                    <option value="Drama">
-                        Drama
-                    </option>
-
-                    <option value="Philosophy">
-                        Philosophy
-                    </option>
-
-                    <option value="Humor">
-                        Humor
-                    </option>
-
-                    <option value="History">
-                        History
-                    </option>
-                    </select>
-
+                <h2> {this.props.myQuery ? this.props.myQuery : "No Topic Selected" }</h2>
                 {title_image}
             </div>
-
         );
     }
 

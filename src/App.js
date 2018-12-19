@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import DisplayData from './DisplayData.js';
+import TopicSelect from './TopicSelect.js';
 
 
 import axios from 'axios';
@@ -18,20 +19,23 @@ class App extends Component {
     this.state = {
       results: [],
       error: null,
-      query: 'Fiction'
+      query: null,
+      loading: false
     };
     
-    this.changeQuery = this.changeQuery.bind(this);
+
+    this.clickChange = this.clickChange.bind(this);
   }
 
-    changeQuery (newTopic){
-      this.setState({ query: newTopic })
+    clickChange (newTopic){
+      this.setState({ query: newTopic, loading: true })
 
       axios.get(API, {
         params: {topic: newTopic}
       })
-        .then(res => this.setState({ results: res.data.results }))
+        .then(res => this.setState({ results: res.data.results, loading: false}))
     }
+
 
 
   fetchData(){
@@ -77,7 +81,9 @@ render() {
 
       <ul>
         <div className='DisplayData'>
-        <DisplayData  results={this.state.results}  onChange={this.changeQuery} myQuery={this.state.query}  />
+        <h1>React based Gutendex.com eBooks </h1>
+        <TopicSelect onClick={this.clickChange}/>
+        <DisplayData  results={this.state.results}  myQuery={this.state.query}  loading={this.state.loading}/>
         </div>
       </ul>
 
