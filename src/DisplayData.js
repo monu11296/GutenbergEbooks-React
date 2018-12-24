@@ -5,7 +5,6 @@ import loadingPic from './pic.gif';
 
 class DisplayData extends Component {
 
-      //var title_image = this.props.results;
 
       checkFormat(bookFormat){
         var i;

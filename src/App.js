@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import DisplayData from './DisplayData.js';
 import TopicSelect from './TopicSelect.js';
+import Search from './Search.js';
 
 
 import axios from 'axios';
@@ -25,6 +26,7 @@ class App extends Component {
     
 
     this.clickChange = this.clickChange.bind(this);
+    this.inputChange = this.inputChange.bind(this);
   }
 
     clickChange (newTopic){
@@ -35,6 +37,16 @@ class App extends Component {
       })
         .then(res => this.setState({ results: res.data.results, loading: false}))
     }
+
+    inputChange (newInput){
+      this.setState({ loading: true })
+
+      axios.get(API, {
+        params: {topic: this.state.query, search: newInput}
+      })
+        .then(res => this.setState({ results: res.data.results, loading: false}))
+    }
+
 
 
 
@@ -83,6 +95,7 @@ render() {
         <div className='DisplayData'>
         <h1>React based Gutendex.com eBooks </h1>
         <TopicSelect onClick={this.clickChange}/>
+        <Search onChange={this.inputChange}/>
         <DisplayData  results={this.state.results}  myQuery={this.state.query}  loading={this.state.loading}/>
         </div>
       </ul>
